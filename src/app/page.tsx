@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Trophy, Users } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 const mockPolls = [
   { img: "👟", label: "Celle-ci", votes: 45 },
@@ -60,19 +60,19 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="w-full sm:w-auto"
           >
-            <Button
-              asChild
-              size="lg"
-              className="gradient-bg group w-full sm:w-auto gap-3 rounded-full px-8 py-7 text-lg font-bold text-white shadow-[0_0_40px_rgba(167,139,250,0.3)] transition-all duration-300 hover:shadow-[0_0_60px_rgba(167,139,250,0.5)] hover:scale-[1.02] active:scale-[0.98] border-0"
+            <Link 
+              href="/create"
+              className={buttonVariants({
+                size: "lg",
+                className: "gradient-bg group w-full sm:w-auto gap-3 rounded-full px-8 py-7 text-lg font-bold text-white shadow-[0_0_40px_rgba(167,139,250,0.3)] transition-all duration-300 hover:shadow-[0_0_60px_rgba(167,139,250,0.5)] hover:scale-[1.02] active:scale-[0.98] border-0"
+              })}
             >
-              <Link href="/create">
-                Créer un sondage
-                <ArrowRight
-                  size={20}
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                />
-              </Link>
-            </Button>
+              Créer un sondage
+              <ArrowRight
+                size={20}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </Link>
           </motion.div>
 
           {/* Exemple Visuel */}

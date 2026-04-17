@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 
 export default function PollPage({ params }: { params: { id: string } }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [voted, setVoted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [pollData, setPollData] = useState<any>(null);
+  const [pollData, setPollData] = useState<{ id: string; question: string; options: { id: string; image_url: string }[] } | null>(null);
   const [totalVotes, setTotalVotes] = useState(0);
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export default function PollPage({ params }: { params: { id: string } }) {
       <div className="min-h-dvh flex flex-col items-center justify-center p-4 text-center">
         <h2 className="text-2xl font-bold mb-2">Sondage introuvable</h2>
         <p className="text-white/60 mb-6">Le lien est peut-être invalide ou expiré.</p>
-        <Button asChild><Link href="/">Créer un sondage</Link></Button>
+        <Link href="/" className={buttonVariants()}>Créer un sondage</Link>
       </div>
     );
   }
@@ -111,11 +111,9 @@ export default function PollPage({ params }: { params: { id: string } }) {
           </div>
           <h2 className="text-2xl font-bold text-white">Vote enregistré !</h2>
           <p className="text-white/60 mb-4">Merci d&apos;avoir aidé ton pote.</p>
-          <Button asChild className="w-full rounded-2xl py-6 bg-violet-600 hover:bg-violet-500 text-white font-semibold">
-            <Link href={`/poll/${params.id}/results`} className="w-full">
-              Voir les résultats
-            </Link>
-          </Button>
+          <Link href={`/poll/${params.id}/results`} className={buttonVariants({ className: "w-full rounded-2xl py-6 bg-violet-600 hover:bg-violet-500 text-white font-semibold" })}>
+            Voir les résultats
+          </Link>
         </motion.div>
       </div>
     );
@@ -148,7 +146,7 @@ export default function PollPage({ params }: { params: { id: string } }) {
 
       <main className="flex-1 w-full flex flex-col">
         <div className={`grid gap-3 sm:gap-4 ${pollData.options.length === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2'}`}>
-          {pollData.options.map((option: any, i: number) => (
+          {pollData.options.map((option: { id: string; image_url: string }, i: number) => (
             <motion.div
               key={option.id}
               initial={{ opacity: 0, scale: 0.95 }}

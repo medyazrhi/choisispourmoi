@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ImagePlus, X, Rocket } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
@@ -106,11 +106,9 @@ export default function CreatePoll() {
       </div>
 
       <header className="flex items-center mb-8 mt-2">
-        <Button asChild variant="ghost" size="icon" className="rounded-full hover:bg-white/10 text-white/70">
-          <Link href="/">
-            <ArrowLeft size={20} />
-          </Link>
-        </Button>
+        <Link href="/" className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-full hover:bg-white/10 text-white/70" })}>
+          <ArrowLeft size={20} />
+        </Link>
         <h1 className="text-xl font-bold ml-2">Créer un sondage</h1>
       </header>
 

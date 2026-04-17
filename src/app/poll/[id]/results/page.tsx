@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import { Share2, Crown, ArrowLeft, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 
 export default function ResultsPage({ params }: { params: { id: string } }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [pollData, setPollData] = useState<any>(null);
+  const [pollData, setPollData] = useState<{ id: string; question: string; totalVotes: number; options: { id: string; image_url: string; votes: number }[] } | null>(null);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -77,7 +77,7 @@ export default function ResultsPage({ params }: { params: { id: string } }) {
       <div className="min-h-dvh flex flex-col items-center justify-center p-4 text-center">
         <h2 className="text-2xl font-bold mb-2">Erreur</h2>
         <p className="text-white/60 mb-6">Impossible de charger les résultats.</p>
-        <Button asChild><Link href="/">Retour</Link></Button>
+        <Link href="/" className={buttonVariants()}>Retour</Link>
       </div>
     );
   }
@@ -92,11 +92,9 @@ export default function ResultsPage({ params }: { params: { id: string } }) {
       </div>
 
       <header className="flex items-start justify-between mb-8 mt-2">
-        <Button asChild variant="ghost" size="icon" className="rounded-full hover:bg-white/10 text-white/70">
-          <Link href={`/poll/${params.id}`}>
-            <ArrowLeft size={20} />
-          </Link>
-        </Button>
+        <Link href={`/poll/${params.id}`} className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-full hover:bg-white/10 text-white/70" })}>
+          <ArrowLeft size={20} />
+        </Link>
         <div className="text-center flex-1 pr-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -117,7 +115,7 @@ export default function ResultsPage({ params }: { params: { id: string } }) {
 
       <main className="flex-1 w-full flex flex-col gap-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {pollData.options.map((option: any, i: number) => {
+          {pollData.options.map((option: { id: string; image_url: string; votes: number }, i: number) => {
             const isWinner = option.id === winner?.id && option.votes > 0;
             const percentage = pollData.totalVotes === 0 ? 0 : Math.round((option.votes / pollData.totalVotes) * 100);
 
